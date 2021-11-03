@@ -1,6 +1,6 @@
 # Импорт библиотек
 import os
-
+import time
 import pandas as pd
 
 
@@ -155,3 +155,15 @@ def check_limit(path, limit):
                 small_file.write(line)
             if small_file:
                 small_file.close()
+        os.remove(path)
+
+
+def print_logs(function):
+    """
+    Декоратор для функций - выводит время выполнения
+    """
+    def accept_arg(*args):
+        start_time = time.time()
+        function(*args)
+        print_mes(f'Время выполнения: {time.time() - start_time:.4f} секунд', True)
+    return accept_arg
