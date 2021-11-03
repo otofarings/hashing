@@ -1,5 +1,4 @@
 import hashlib as hs
-import time
 
 # ---------------------------------------------------------------------------------------------------------------------
 """
@@ -8,7 +7,6 @@ import time
 try:
     from config import PATH
     from config import LIMITS
-    from config import LOG_MES
 except ImportError:
     raise Exception('Файл или модули не найдены')
 
@@ -27,24 +25,22 @@ class Hash:
     def __init__(self):
         self.bases = {}
 
+    @print_logs
     def import_bases(self):
         """
         Импорт баз
         """
-        print_mes(LOG_MES['1'])
-        start_time = time.time()
+        print_mes('Импорт баз')
         self.bases = get_all_in_folder(
             self.bases, PATH['hash_path']
         )
-        print_mes(f'Время выполнения: {time.time() - start_time:.4f} секунд')
-        print_mes(f'{LOG_MES["1"]} завершено', True)
 
+    @print_logs
     def hash_bases(self):
         """
         Хэширование баз
         """
-        print_mes(LOG_MES['2'])
-        start_time = time.time()
+        print_mes('Хэширование msisdn')
         for base in self.bases:
             self.bases[base]['df']['numbers'] = self.bases[base]['df']['numbers'].apply(
                 lambda _: _.strip()
@@ -53,15 +49,13 @@ class Hash:
                 lambda _: hs.md5(bytes(_, encoding='utf-8')).hexdigest()
             )
             print_mes(f'{self.bases[base]["name"]} готов')
-        print_mes(f'Время выполнения: {time.time() - start_time:.4f} секунд')
-        print_mes(f'{LOG_MES["2"]} завершено', True)
 
+    @print_logs
     def save_for_yandex(self):
         """
         Яндекс – hash - .CSV + название столбца "phone"
         """
-        print_mes(LOG_MES['3'])
-        start_time = time.time()
+        print_mes('Создание файлов для Яндекса')
         folder = comp_path(PATH['results_hash_path'], 'ya')
         create_dir(folder)
         for base in self.bases:
@@ -71,15 +65,13 @@ class Hash:
             )
             check_limit(path_with_name, LIMITS['yandex'])
             print_mes(f'{self.bases[base]["name"]} готов')
-        print_mes(f'Время выполнения: {time.time() - start_time:.4f} секунд')
-        print_mes(f'{LOG_MES["3"]} завершено', True)
 
+    @print_logs
     def save_for_facebook(self):
         """
         Фейсбук/IG – msisdn - .TXT
         """
-        print_mes(LOG_MES['4'])
-        start_time = time.time()
+        print_mes('Создание файлов для Фейсбука')
         folder = comp_path(PATH['results_hash_path'], 'fb')
         create_dir(folder)
         for base in self.bases:
@@ -88,15 +80,13 @@ class Hash:
                 path_with_name, header=None, index=None, sep=' ', mode='a'
             )
             print_mes(f'{self.bases[base]["name"]} готов')
-        print_mes(f'Время выполнения: {time.time() - start_time:.4f} секунд')
-        print_mes(f'{LOG_MES["4"]} завершено', True)
 
+    @print_logs
     def save_for_vkontakte(self):
         """
         ВК – hash - .TXT
         """
-        print_mes(LOG_MES['5'])
-        start_time = time.time()
+        print_mes('Создание файлов для Вконтакте')
         folder = comp_path(PATH['results_hash_path'], 'vk')
         create_dir(folder)
         for base in self.bases:
@@ -106,15 +96,13 @@ class Hash:
             )
             check_limit(path_with_name, LIMITS['vkontakte'])
             print_mes(f'{self.bases[base]["name"]} готов')
-        print_mes(f'Время выполнения: {time.time() - start_time:.4f} секунд')
-        print_mes(f'{LOG_MES["5"]} завершено', True)
 
+    @print_logs
     def save_for_mytarget(self):
         """
         МТ – hash - .TXT
         """
-        print_mes(LOG_MES['6'])
-        start_time = time.time()
+        print_mes('Создание файлов для Майтаргета')
         folder = comp_path(PATH['results_hash_path'], 'mt')
         create_dir(folder)
         for base in self.bases:
@@ -124,15 +112,13 @@ class Hash:
             )
             check_limit(path_with_name, LIMITS['mytarget'])
             print_mes(f'{self.bases[base]["name"]} готов')
-        print_mes(f'Время выполнения: {time.time() - start_time:.4f} секунд')
-        print_mes(f'{LOG_MES["6"]} завершено', True)
 
+    @print_logs
     def save_for_youtube(self):
         """
         DV360/youtube - MSI - .CSV + название столбца "Phone"
         """
-        print_mes(LOG_MES['7'])
-        start_time = time.time()
+        print_mes('Создание файлов для Ютуба')
         folder = comp_path(PATH['results_hash_path'], 'dv')
         create_dir(folder)
         for base in self.bases:
@@ -145,8 +131,6 @@ class Hash:
                 path_with_name, index=None
             )
             print_mes(f'{self.bases[base]["name"]} готов')
-        print_mes(f'Время выполнения: {time.time() - start_time:.4f} секунд')
-        print_mes(f'{LOG_MES["7"]} завершено', True)
 
 
 if __name__ == '__main__':
