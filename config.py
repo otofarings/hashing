@@ -1,9 +1,9 @@
 # Пути до:
-path_to_fold = '/Users/anton/Projects/Automation Processes/Hash'
+path_to_fold = '/Hash'
 PATH = {
     # Папка с базами для хэширования
-    'hash_path': f'{path_to_fold}/папка2/базы',
-    'results_hash_path': f'{path_to_fold}/папка2/результат'
+    'hash_path': f'{path_to_fold}/базы',
+    'results_hash_path': f'{path_to_fold}/результат'
 }
 
 LIMITS = {
